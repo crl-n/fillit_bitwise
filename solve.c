@@ -43,6 +43,11 @@ void	solve(t_tet **tets)
 		i++;
 	}
 	grid.grid_size = get_grid_size(tets);
+	grid.remaining = grid.grid_size * grid.grid_size;
+	i = 0;
+	while (tets[i])
+		i++;
+	grid.blocks_total = i;
 	while (1)
 	{
 		try_solution(&grid, grid.grid_size, tets, 0);

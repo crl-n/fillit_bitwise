@@ -59,11 +59,40 @@ void	set_start(size_t *k, size_t *l, t_tet *tet)
 	}
 }
 
+void	find_gaps(t_grid *grid, size_t k, size_t l)
+{
+	size_t	m;
+
+	m = k;
+	while (1)
+	{
+		while (l >= 0)
+		{
+			if (grid->grid[k][l] == '.')
+			{
+				if ((l == 0 || grid->grid[k][l - 1] != '.')
+				&& (l == grid->grid_size - 1 || grid->grid[k][l + 1] != '.')
+				&& (l == 0 || grid->grid[k - 1][l] != '.')
+				&& (l == grid->grid_size - 1 || grid->grid[k + 1][l] != '.'))
+					grid->remaining--;
+			}
+			l--;
+		}
+		l = grid->grid_size - 1;
+		if (m == k - 1)
+			break ;
+		if (k > 0)
+			m--;
+		else
+			break ;
+	}
+}
 void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 {
 	size_t	k;
 	size_t	l;
 
+		
 	check_if_solved(tets[i], tets, grid);
 	set_start(&k, &l, tets[i]);
 	while (k + tets[i]->height - 1 < grid_size)
@@ -74,8 +103,12 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 			{
 				if (tetrimino_fits(tets[i], grid, k, l))
 				{
-					try_solution(grid, grid_size, tets, i + 1);
+					grid->remaining -= 4;
+					find_gaps(grid, k, l);
+					if (grid->remaining >= grid->blocks_total)
+						try_solution(grid, grid_size, tets, i + 1);
 					remove_tetrimino(tets[i], grid, k, l);
+					grid->remaining += 4;
 				}
 			}
 			l++;

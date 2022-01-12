@@ -29,6 +29,8 @@ typedef struct s_tet
 typedef struct s_grid
 {
 	size_t	grid_size;
+	size_t	remaining;
+	size_t	blocks_total;
 	char	grid[32][32];
 }				t_grid;
 
