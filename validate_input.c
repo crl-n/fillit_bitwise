@@ -6,7 +6,7 @@
 /*   By: cnysten <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:27:38 by cnysten           #+#    #+#             */
-/*   Updated: 2022/01/06 19:50:19 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:09:57 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	invalid_input(void)
 {
 	ft_putstr("error\n");
+	// Here we need to free tetriminos allocated on heap!
 	exit(1);
 }
 
