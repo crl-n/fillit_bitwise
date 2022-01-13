@@ -6,29 +6,12 @@
 /*   By: cnysten <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 13:54:33 by cnysten           #+#    #+#             */
-/*   Updated: 2022/01/06 19:48:14 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:07:09 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include "fillit.h"
-
-t_tet	*new_tetrimino(size_t i)
-{
-	t_tet	*tet;
-
-	tet = (t_tet *) malloc(sizeof (t_tet));
-	if (!tet)
-		return (NULL);
-	tet->symbol = 'A' + i;
-	tet->prev = NULL;
-	tet->grid_placement[0] = 0;
-	tet->grid_placement[1] = 0;
-	tet->height = 1;
-	tet->width = 1;
-	tet->left_offset = 0;
-	return (tet);
-}
 
 void	free_tetriminos(t_tet **tets)
 {

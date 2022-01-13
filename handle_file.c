@@ -6,12 +6,29 @@
 /*   By: mde-maul <mde-maul@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 19:00:31 by mde-maul          #+#    #+#             */
-/*   Updated: 2022/01/10 20:58:29 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 17:07:21 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fillit.h"
 #include "fcntl.h"
+
+t_tet	*new_tetrimino(size_t i)
+{
+	t_tet	*tet;
+
+	tet = (t_tet *) malloc(sizeof (t_tet));
+	if (!tet)
+		return (NULL);
+	tet->symbol = 'A' + i;
+	tet->prev = NULL;
+	tet->grid_placement[0] = 0;
+	tet->grid_placement[1] = 0;
+	tet->height = 1;
+	tet->width = 1;
+	tet->left_offset = 0;
+	return (tet);
+}
 
 int	handle_gnl_ret(int ret, t_tet **tet, char **line)
 {
