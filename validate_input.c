@@ -6,7 +6,7 @@
 /*   By: cnysten <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 15:27:38 by cnysten           #+#    #+#             */
-/*   Updated: 2022/01/13 17:09:57 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 20:15:21 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 void	invalid_input(void)
 {
 	ft_putstr("error\n");
-	// Here we need to free tetriminos allocated on heap!
+	// TODO: Here we need to free tetriminos allocated on heap!
 	exit(1);
 }
 
-void	handle_block(size_t *block_count, t_tet *tet, int j)
+void	handle_block(size_t *block_count, t_tet *tet, int j, t_uint16 mask)
 {
 	static int		first_coord[2];
 
@@ -38,6 +38,7 @@ void	handle_block(size_t *block_count, t_tet *tet, int j)
 		tet->coords[(*block_count - 2) * 2 + 2] = (int)j / 5 - first_coord[0];
 		tet->coords[(*block_count - 2) * 2 + 2 + 1] = j % 5 - first_coord[1];
 	}
+	tet->bits = tet->bits | mask;
 }
 
 /*
@@ -53,12 +54,14 @@ void	validate_tet_map(char *buff, ssize_t i, t_tet *tet)
 {
 	ssize_t			j;
 	static size_t	block_count;
+	t_uint16	mask;
 
-	j = 0;
 	block_count = 0;
 	if (buff[i + 4] != '\n' || buff[i + 9] != '\n' || buff[i + 14] != '\n' \
 		|| buff[i + 19] != '\n' || buff[i + 20] != '\n')
 		invalid_input();
+	mask = 0x8000;
+	j = 0;
 	while (j < 21)
 	{
 		if (j == 4 || j == 9 || j == 14 || j == 19 || j == 20)
@@ -69,66 +72,48 @@ void	validate_tet_map(char *buff, ssize_t i, t_tet *tet)
 		if (buff[j + i] != '#' && buff[j + i] != '.')
 			invalid_input();
 		if (buff[j + i] == '#')
-			handle_block(&block_count, tet, j);
+			handle_block(&block_count, tet, j, mask);
 		j++;
+		mask = mask >> 1;
 	}
+	// TODO: shift bitwise representations to top-left corner here
 	validate_tetrimino(tet);
 }
 
 /*
- * The function get_dists() gets the Manhattan distances used in
- * validate_tetrimino().
- */
-
-void	fill_dists(t_tet *tet, int *dists)
-{
-	size_t	i;
-	size_t	j;
-	size_t	k;
-
-	i = 0;
-	k = 0;
-	while (i < 7)
-	{
-		j = i + 2;
-		while (j < 7)
-		{
-			dists[k++] = (tet->coords[j] - tet->coords[i]) + \
-				ft_abs((tet->coords[j + 1] - tet->coords[i + 1]));
-			j += 2;
-		}
-		i += 2;
-	}
-}
-
-/*
- * The function validate_tetrimino() checks if all blocks in a tetrimino
- * are connected to each other.
+ * validate_tetrimino() checks if a tetrimino is valid by comparing it to
+ * a hard-coded list of the 19 valid tetriminos.
  *
- * The int array dists contains the Manhattan distances of each tetrimino
- * block to each other. A valid tetrimino will have either 3 or 4 distances
- * of 1. If it has less, there is at least one gap between blocks.
+ * Valid tetriminos are described in hex form. Each hex digit corresponds
+ * to 4 bits in the bitmap. For instance, 0xf000 translates to:
+ *
+ * 		f	1111
+ * 		0	0000
+ * 		0	0000
+ * 		0	0000
  */
 
 void	validate_tetrimino(t_tet *tet)
 {
-	size_t	ones;
-	size_t	i;
-	int		*dists;
-
-	i = 0;
-	ones = 0;
-	dists = (int *) malloc(sizeof (int) * 6);
-	if (!dists)
-		exit(1);
-	fill_dists(tet, dists);
-	while (i < 6)
-	{
-		if (dists[i] == 1)
-			ones++;
-		i++;
-	}
-	ft_memdel((void *) &dists);
-	if (ones < 3)
-		invalid_input();
+	if (tet->bits == 0xf000
+			|| tet->bits == 0x8888
+			|| tet->bits == 0xcc00
+			|| tet->bits == 0x88c0
+			|| tet->bits == 0x2e00
+			|| tet->bits == 0xc440
+			|| tet->bits == 0xe800
+			|| tet->bits == 0x44c0
+			|| tet->bits == 0xe200
+			|| tet->bits == 0xc880
+			|| tet->bits ==  0x8c00
+			|| tet->bits ==  0x6c00
+			|| tet->bits ==  0x8c40
+			|| tet->bits ==  0xc600
+			|| tet->bits ==  0x4c80
+			|| tet->bits ==  0x4e00
+			|| tet->bits ==  0x4c40
+			|| tet->bits ==  0xe400
+			|| tet->bits ==  0x8c80)
+		return ;
+	invalid_input();
 }

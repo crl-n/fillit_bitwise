@@ -6,7 +6,7 @@
 /*   By: cnysten <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/05 16:15:32 by cnysten           #+#    #+#             */
-/*   Updated: 2022/01/10 19:32:35 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 19:50:35 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,8 @@ static size_t	get_grid_size(t_tet **tets)
 }
 
 /*
- * solve() calls try_solution.
+ * solve() starts the backtracking recursion with the minimum possible
+ * grid_size that can hold n * 4 tetrimino blocks (n = amount of tetriminos)
  */
 
 void	solve(t_tet **tets)
@@ -36,13 +37,10 @@ void	solve(t_tet **tets)
 	size_t	i;
 
 	i = 0;
-	while (i < 32)
-	{
-		ft_memset((void *)grid.grid[i], '.', 31);
-		grid.grid[i][31] = '\0';
-		i++;
-	}
+	while (i < 16)
+		grid.grid[i++] = 0xffff;
 	grid.grid_size = get_grid_size(tets);
+	// TODO: zero grid_size * grid_size area in grid here
 	while (1)
 	{
 		try_solution(&grid, grid.grid_size, tets, 0);

@@ -6,7 +6,7 @@
 /*   By: mde-maul <mde-maul@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/10 19:00:31 by mde-maul          #+#    #+#             */
-/*   Updated: 2022/01/13 17:07:21 by cnysten          ###   ########.fr       */
+/*   Updated: 2022/01/13 20:16:04 by cnysten          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_tet	*new_tetrimino(size_t i)
 	tet = (t_tet *) malloc(sizeof (t_tet));
 	if (!tet)
 		return (NULL);
+	tet->bits = 0x0000;
 	tet->symbol = 'A' + i;
 	tet->prev = NULL;
 	tet->grid_placement[0] = 0;
@@ -30,20 +31,15 @@ t_tet	*new_tetrimino(size_t i)
 	return (tet);
 }
 
-int	handle_gnl_ret(int ret, t_tet **tet, char **line)
-{
-	if (ret == 0)
-	{
-		ft_memdel((void *) tet);
-		return (1);
-	}
-	if (ret < 0)
-	{
-		ft_strdel(line);
-		invalid_input();
-	}
-	return (0);
-}
+/*
+ * get_tetriminos() reads the input all at once and checks that:
+ *
+ *	∙ the input consists of max 545 characters (25 * 21 + 1 * 20)
+ *	∙ the amount of characters + 1 is divisible by 21
+ *	∙ the last tetrimino has only one trailing newline
+ *
+ *	the rest of the validation is done by other functions.
+ */
 
 void	get_tetriminos(int fd, t_tet **tets)
 {
@@ -66,6 +62,10 @@ void	get_tetriminos(int fd, t_tet **tets)
 		i += 21;
 	}
 }
+
+/*
+ * hadle_file() opens the input file and makes sure it's a valid file.
+ */
 
 void	handle_file(char *filename, t_tet **tets)
 {
