@@ -47,5 +47,6 @@ void	get_prevs(t_tet **tets);
 void	get_dimensions(t_tet **tets);
 void	handle_file(char *filename, t_tet **tets);
 t_tet	*new_tetrimino(size_t i);
+int		test(void);
 
 #endif

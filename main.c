@@ -41,7 +41,7 @@ void	free_tetriminos(t_tet **tets)
 
 int	main(int argc, char **argv)
 {
-	t_tet	*tets[27];
+	/*t_tet	*tets[27];
 
 	if (argc != 2)
 	{
@@ -54,5 +54,9 @@ int	main(int argc, char **argv)
 	get_prevs(tets);
 	solve(tets);
 	free_tetriminos(tets);
+	*/
+	(void)argc;
+	(void)argv;
+	test();
 	return (0);
 }

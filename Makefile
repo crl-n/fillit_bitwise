@@ -19,7 +19,8 @@ SRCS = main.c \
 	   try_solution.c \
 	   display_solution.c \
 	   handle_tetriminos.c \
-	   handle_file.c
+	   handle_file.c \
+	   test.c
 
 OBJS = $(SRCS:%.c=%.o)
 
