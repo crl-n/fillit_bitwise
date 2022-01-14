@@ -28,8 +28,8 @@ all: $(NAME)
 
 $(NAME):
 	make -C ./libft
-	gcc -Wall -Werror -Wextra -c $(SRCS)
-	gcc -Wall -Werror -Wextra -o $(NAME) $(OBJS) -L./libft -lft
+	gcc -g -Wall -Werror -Wextra -c $(SRCS)
+	gcc -g -Wall -Werror -Wextra -o $(NAME) $(OBJS) -L./libft -lft
 
 clean:
 	rm -f $(OBJS)

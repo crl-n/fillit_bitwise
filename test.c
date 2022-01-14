@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include "fillit.h"
 
-void	shift_tet(u_int16_t *tet)
+void	shift_tet1(u_int16_t *tet)
 {
 	u_int16_t	top_row = 0b1111000000000000;
 	u_int16_t	left_col = 0b1000100010001000;
@@ -24,7 +24,6 @@ int	get_bit_tet(char *tet)
 		{
 			if (tet[i] == '#')
 			{
-				//printf("is this infinitely looping or sth");
 				bitwise_tet = bitwise_tet | bitwise_nb_thing;
 			}
 			bitwise_nb_thing = bitwise_nb_thing >> 1;
@@ -59,7 +58,7 @@ void	fake_map(size_t grid_size, u_int16_t **fake_map)
 	}
 }
 
-size_t	tet_fits(u_int16_t *map, size_t k, u_int16_t tet)
+size_t	tet_fits1(u_int16_t *map, size_t k, u_int16_t tet)
 {
 	size_t		i;
 	u_int16_t	row;
@@ -81,7 +80,6 @@ size_t	tet_fits(u_int16_t *map, size_t k, u_int16_t tet)
 				}
 				return (0);
 			}
-				
 		map[i] = map[i] | row;
 		nb = nb >> 4;
 		i++;
@@ -89,7 +87,7 @@ size_t	tet_fits(u_int16_t *map, size_t k, u_int16_t tet)
 	return (1);
 }
 
-void	print_map(u_int16_t *map, size_t grid_size)
+void	print_map1(u_int16_t *map, size_t grid_size)
 {
 	size_t		i;
 
@@ -139,8 +137,8 @@ int	test(void)
 
 	bit_tet1 = get_bit_tet(tetrimino3);
 	bit_tet2 = get_bit_tet(tetrimino1);
-	shift_tet(&bit_tet1);
-	shift_tet(&bit_tet2);
+	shift_tet1(&bit_tet1);
+	shift_tet1(&bit_tet2);
 
 	size_t		i;
 	size_t		j;
@@ -167,13 +165,13 @@ int	test(void)
 	}
 
 	printf("so the bitwised tetrimino is: %x\n", bit_tet1);
-	print_map(map, grid_size);
+	print_map1(map, grid_size);
 
 	//try for every spot in first row
 	k = 0;
 	while (k < 16)
 	{
-		if (tet_fits(map, k, bit_tet1))
+		if (tet_fits1(map, k, bit_tet1))
 		{
 			printf("first tet fits\n");
 			break ;
@@ -181,12 +179,12 @@ int	test(void)
 		k++;
 	}
 	
-	print_map(map, grid_size);
+	print_map1(map, grid_size);
 
 	k = 0;
 	while (k < 16)
 	{
-		if (tet_fits(map, k, bit_tet2))
+		if (tet_fits1(map, k, bit_tet2))
 		{
 			printf("second tet fits\n");
 			break ;
@@ -194,7 +192,7 @@ int	test(void)
 		k++;
 	}
 
-	print_map(map, grid_size);
+	print_map1(map, grid_size);
 	return (0);
 }
 /*

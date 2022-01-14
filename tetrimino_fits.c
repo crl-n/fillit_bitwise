@@ -18,7 +18,7 @@ void	update_grid_placement(t_tet *tet, size_t k, size_t l)
 	tet->grid_placement[1] = l;
 }
 
-int	is_collision(size_t	row, size_t col, t_grid *grid)
+/*int	is_collision(size_t	row, size_t col, t_grid *grid)
 {
 	if (row >= grid->grid_size)
 		return (1);
@@ -27,7 +27,7 @@ int	is_collision(size_t	row, size_t col, t_grid *grid)
 	if (grid->grid[row][col] != '.')
 		return (1);
 	return (0);
-}
+}*/
 
 /*
  * The function tetrimino_fits() checks if a tetrimino can be placed at (k, l)
@@ -39,7 +39,7 @@ int	is_collision(size_t	row, size_t col, t_grid *grid)
  * filled to the grid. If the fit fails, the symbols are changed back into dots.
  */
 
-int	tetrimino_fits(t_tet *tet, t_grid *grid, size_t k, size_t l)
+/*int	tetrimino_fits(t_tet *tet, t_grid *grid, size_t k, size_t l)
 {
 	size_t	j;
 	size_t	row;
@@ -63,6 +63,38 @@ int	tetrimino_fits(t_tet *tet, t_grid *grid, size_t k, size_t l)
 		}
 		grid->grid[row][col] = tet->symbol;
 		j += 2;
+	}
+	update_grid_placement(tet, k, l);
+	return (1);
+}*/
+
+int	tet_fits(t_tet *tet, t_grid *grid, size_t k, size_t l)
+{
+	size_t		i;
+	u_int16_t	row;
+	u_int16_t	nb = 0b1111000000000000;
+
+	i = 0;
+	while (i < 4)
+	{
+		row = ((tet->bits & nb) << (4 * i)) >> l;
+		//printf("row is now: %x\n", row);
+		if (row)
+			if (row & grid->grid[i + k])
+			{
+				// remove
+				while (i > 0)
+				{
+					i--;
+					nb = nb << 4;
+					row = ((tet->bits & nb) << (4 * i)) >> l;
+					grid->grid[i + k] = grid->grid[i + k] ^ row;
+				}
+				return (0);
+			}
+		grid->grid[i + k] = grid->grid[i + k] | row;
+		nb = nb >> 4;
+		i++;
 	}
 	update_grid_placement(tet, k, l);
 	return (1);

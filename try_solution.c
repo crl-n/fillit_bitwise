@@ -18,17 +18,19 @@
 
 void	remove_tetrimino(t_tet *tet, t_grid *grid, size_t k, size_t l)
 {
-	size_t	j;
-	size_t	row;
-	size_t	col;
+	size_t		i;
+	u_int16_t	row;
+	u_int16_t	nb = 0b1111000000000000;
 
-	j = 0;
-	while (j < 7)
+	i = 0;
+	while (i < 4)
 	{
-		row = k + tet->coords[j];
-		col = l + tet->coords[j + 1];
-		grid->grid[row][col] = '.';
-		j += 2;
+		row = ((tet->bits & nb) << (4 * i)) >> l;
+		if (row)
+		{
+			grid->grid[i + k] = grid->grid[i + k] ^ row;
+		}
+		i++;
 	}
 }
 
@@ -40,9 +42,10 @@ void	remove_tetrimino(t_tet *tet, t_grid *grid, size_t k, size_t l)
 
 void	check_if_solved(t_tet *tet, t_tet **tets, t_grid *grid)
 {
+	//(void)grid;
 	if (!tet)
 	{
-		display_solution(grid);
+		display_solution(grid, tets);
 		free_tetriminos(tets);
 		exit(0);
 	}
@@ -51,6 +54,7 @@ void	check_if_solved(t_tet *tet, t_tet **tets, t_grid *grid)
 void	set_start(size_t *k, size_t *l, t_tet *tet)
 {
 	*k = 0;
+	//*l = 0;
 	*l = 0 + tet->left_offset;
 	if (tet->prev)
 	{
@@ -63,20 +67,18 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 {
 	size_t	k;
 	size_t	l;
-
+	printf("hey, i is %zu\n", i);
 	check_if_solved(tets[i], tets, grid);
 	set_start(&k, &l, tets[i]);
 	while (k + tets[i]->height - 1 < grid_size)
 	{
-		while (l + tets[i]->width - tets[i]->left_offset - 1 < grid_size)
+		while (l + tets[i]->width - 1 < grid_size)
 		{
-			if (grid->grid[k][l] == '.')
+			if (tet_fits(tets[i], grid, k, l))
 			{
-				if (tetrimino_fits(tets[i], grid, k, l))
-				{
-					try_solution(grid, grid_size, tets, i + 1);
-					remove_tetrimino(tets[i], grid, k, l);
-				}
+				printf("hello, is is %zu and k is %zu and l is %zu\n", i, k, l);
+				try_solution(grid, grid_size, tets, i + 1);
+				remove_tetrimino(tets[i], grid, k, l);
 			}
 			l++;
 		}

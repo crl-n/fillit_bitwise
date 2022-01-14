@@ -11,6 +11,8 @@
 /* ************************************************************************** */
 
 #include <stdlib.h>
+//delete
+#include <stdio.h>
 #include "fillit.h"
 
 void	free_tetriminos(t_tet **tets)
@@ -24,7 +26,8 @@ void	free_tetriminos(t_tet **tets)
 
 int	main(int argc, char **argv)
 {
-	/*t_tet	*tets[27];
+	t_tet	*tets[27];
+	
 
 	if (argc != 2)
 	{
@@ -33,13 +36,16 @@ int	main(int argc, char **argv)
 	}
 	ft_bzero(tets, sizeof(t_tet *) * 27);
 	handle_file(argv[1], tets);
+	int i = 0;
+	while (tets[i])
+	{
+		printf("tet %d: %x\n", i, tets[i]->bits);
+		i++;
+	}
 	get_dimensions(tets);
 	get_prevs(tets);
 	solve(tets);
 	free_tetriminos(tets);
-	*/
-	(void)argc;
-	(void)argv;
-	test();
+	//test();
 	return (0);
 }

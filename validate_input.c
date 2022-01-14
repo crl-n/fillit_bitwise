@@ -41,6 +41,16 @@ void	handle_block(size_t *block_count, t_tet *tet, int j, t_uint16 mask)
 	tet->bits = tet->bits | mask;
 }
 
+void	shift_tet(t_tet *tet)
+{
+	u_int16_t	top_row = 0b1111000000000000;
+	u_int16_t	left_col = 0b1000100010001000;
+	while (!(top_row & tet->bits))
+		tet->bits = tet->bits << 4;
+	while (!(left_col & tet->bits))
+		tet->bits = tet->bits << 1;
+}
+
 /*
  * The function validate_tet_map() checks if:
  * 		∙ Lines between tetriminos are empty
@@ -77,6 +87,7 @@ void	validate_tet_map(char *buff, ssize_t i, t_tet *tet)
 		mask = mask >> 1;
 	}
 	// TODO: shift bitwise representations to top-left corner here
+	shift_tet(tet);
 	validate_tetrimino(tet);
 }
 
