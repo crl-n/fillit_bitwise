@@ -15,7 +15,7 @@
 void	update_grid_placement(t_tet *tet, size_t k, size_t l)
 {
 	tet->grid_placement[0] = k;
-	tet->grid_placement[1] = l;
+	tet->grid_placement[1] = l + tet->left_offset;
 }
 
 /*int	is_collision(size_t	row, size_t col, t_grid *grid)
@@ -78,11 +78,9 @@ int	tet_fits(t_tet *tet, t_grid *grid, size_t k, size_t l)
 	while (i < 4)
 	{
 		row = ((tet->bits & nb) << (4 * i)) >> l;
-		//printf("row is now: %x\n", row);
 		if (row)
 			if (row & grid->grid[i + k])
 			{
-				// remove
 				while (i > 0)
 				{
 					i--;

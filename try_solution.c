@@ -30,6 +30,7 @@ void	remove_tetrimino(t_tet *tet, t_grid *grid, size_t k, size_t l)
 		{
 			grid->grid[i + k] = grid->grid[i + k] ^ row;
 		}
+		nb = nb >> 4;
 		i++;
 	}
 }
@@ -40,10 +41,10 @@ void	remove_tetrimino(t_tet *tet, t_grid *grid, size_t k, size_t l)
  * solution is displayed and heap allocated memory is freed.
  */
 
-void	check_if_solved(t_tet *tet, t_tet **tets, t_grid *grid)
+void	check_if_solved(t_tet **tets, size_t i, t_grid *grid)
 {
 	//(void)grid;
-	if (!tet)
+	if (!tets[i])
 	{
 		display_solution(grid, tets);
 		free_tetriminos(tets);
@@ -55,7 +56,6 @@ void	set_start(size_t *k, size_t *l, t_tet *tet)
 {
 	*k = 0;
 	*l = 0;
-	//*l = 0 + tet->left_offset;
 	if (tet->prev)
 	{
 		*k = tet->prev->grid_placement[0];
@@ -67,8 +67,8 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 {
 	size_t	k;
 	size_t	l;
-	printf("hey, i is %zu\n", i);
-	check_if_solved(tets[i], tets, grid);
+
+	check_if_solved(tets, i, grid);
 	set_start(&k, &l, tets[i]);
 	while (k + tets[i]->height - 1 < grid_size)
 	{
@@ -76,7 +76,6 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 		{
 			if (tet_fits(tets[i], grid, k, l))
 			{
-				printf("hello, is is %zu and k is %zu and l is %zu\n", i, k, l);
 				try_solution(grid, grid_size, tets, i + 1);
 				remove_tetrimino(tets[i], grid, k, l);
 			}
@@ -84,6 +83,5 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 		}
 		k++;
 		l = 0;
-		//l = 0 + tets[i]->left_offset;
 	}
 }

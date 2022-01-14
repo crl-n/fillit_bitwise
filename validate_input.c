@@ -116,7 +116,7 @@ void	validate_tetrimino(t_tet *tet)
 			|| tet->bits == 0x44c0
 			|| tet->bits == 0xe200
 			|| tet->bits == 0xc880
-			|| tet->bits ==  0x8c00
+			|| tet->bits ==  0x8e00
 			|| tet->bits ==  0x6c00
 			|| tet->bits ==  0x8c40
 			|| tet->bits ==  0xc600
