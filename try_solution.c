@@ -54,8 +54,8 @@ void	check_if_solved(t_tet *tet, t_tet **tets, t_grid *grid)
 void	set_start(size_t *k, size_t *l, t_tet *tet)
 {
 	*k = 0;
-	//*l = 0;
-	*l = 0 + tet->left_offset;
+	*l = 0;
+	//*l = 0 + tet->left_offset;
 	if (tet->prev)
 	{
 		*k = tet->prev->grid_placement[0];
@@ -83,6 +83,7 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 			l++;
 		}
 		k++;
-		l = 0 + tets[i]->left_offset;
+		l = 0;
+		//l = 0 + tets[i]->left_offset;
 	}
 }
