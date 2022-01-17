@@ -80,7 +80,7 @@ void	solve(t_tet **tets)
 	u_int16_t	bitwise_nb;
 
 	grid.grid_size = get_grid_size(tets);
-	printf("grid size %zu\n", grid.grid_size);
+	//printf("grid size %zu\n", grid.grid_size);
 	i = 0;
 	while (i < 16)
 	{

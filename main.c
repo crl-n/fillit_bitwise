@@ -10,23 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdlib.h>
-//delete
-#include <stdio.h>
 #include "fillit.h"
-
-void	free_tetriminos(t_tet **tets)
-{
-	size_t	i;
-
-	i = 0;
-	while (tets[i])
-		free(tets[i++]);
-}
+#include "fcntl.h"
 
 int	main(int argc, char **argv)
 {
 	t_tet	*tets[27];
+	int		fd;
 
 	if (argc != 2)
 	{
@@ -34,7 +24,11 @@ int	main(int argc, char **argv)
 		return (1);
 	}
 	ft_bzero(tets, sizeof(t_tet *) * 27);
-	handle_file(argv[1], tets);
+	fd = open(argv[1], O_RDONLY);
+	if (fd < 0)
+		handle_error(tets);
+	get_tetriminos(fd, tets);
+	close(fd);
 	get_dimensions(tets);
 	get_prevs(tets);
 	solve(tets);

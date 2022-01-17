@@ -43,7 +43,6 @@ void	remove_tetrimino(t_tet *tet, t_grid *grid, size_t k, size_t l)
 
 void	check_if_solved(t_tet **tets, size_t i, t_grid *grid)
 {
-	//(void)grid;
 	if (!tets[i])
 	{
 		display_solution(grid, tets);
@@ -74,7 +73,7 @@ void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i)
 	{
 		while (l + tets[i]->width - 1 < grid_size)
 		{
-			if (tet_fits(tets[i], grid, k, l))
+			if (tetrimino_fits(tets[i], grid, k, l))
 			{
 				try_solution(grid, grid_size, tets, i + 1);
 				remove_tetrimino(tets[i], grid, k, l);

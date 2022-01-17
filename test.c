@@ -123,7 +123,7 @@ void	validate_tetrimino_bit (char *buff, ssize_t i, t_tet *tet)
 	bit_tet = get_bit_tet(buff[i]);
 	shift_tet(&bit_tet);
 	if (!is_valid(tet))
-		invalid_input();
+		handle_error();
 	tet->bits = bit_tet;
 }*/
 

@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
+#include <stdlib.h>
 
 void	place_tet(char **solution, t_tet *tet)
 {
@@ -45,7 +46,7 @@ void	display_solution(t_grid *grid, t_tet **tets)
 
 	char	**solution;
 
-	printf("grid size %zu\n", grid->grid_size);
+	//printf("grid size %zu\n", grid->grid_size);
 	solution = (char **)malloc(sizeof(char *) * grid->grid_size);
 	//if (!solution)
 	i = 0;

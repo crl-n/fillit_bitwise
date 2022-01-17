@@ -18,9 +18,11 @@ SRCS = main.c \
 	   tetrimino_fits.c \
 	   try_solution.c \
 	   display_solution.c \
-	   handle_tetriminos.c \
-	   handle_file.c \
-	   test.c
+	   get_dimensions.c \
+	   get_prevs.c \
+	   get_tetriminos.c \
+	   handle_error.c \
+	   free_tetriminos.c
 
 OBJS = $(SRCS:%.c=%.o)
 

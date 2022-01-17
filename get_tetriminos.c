@@ -11,15 +11,16 @@
 /* ************************************************************************** */
 
 #include "fillit.h"
-#include "fcntl.h"
+#include <unistd.h>
+#include <stdlib.h>
 
-t_tet	*new_tetrimino(size_t i)
+t_tet	*new_tetrimino(size_t i, t_tet **tets)
 {
 	t_tet	*tet;
 
 	tet = (t_tet *) malloc(sizeof (t_tet));
 	if (!tet)
-		return (NULL);
+		handle_error(tets);
 	tet->bits = 0x0000;
 	tet->symbol = 'A' + i;
 	tet->prev = NULL;
@@ -49,31 +50,16 @@ void	get_tetriminos(int fd, t_tet **tets)
 
 	ret = read(fd, buff, 546);
 	if (ret <= 0 || ret == 546 || ((ret + 1) % 21 != 0))
-		invalid_input();
+		handle_error(tets);
 	if (buff[ret - 1] == '\n' && buff[ret - 2] == '\n')
-		invalid_input();
+		handle_error(tets);
 	buff[ret] = '\n';
 	buff[ret + 1] = '\0';
 	i = 0;
 	while (i < ret)
 	{
-		tets[i / 21] = new_tetrimino(i / 21);
-		validate_tet_map(buff, i, tets[i / 21]);
+		tets[i / 21] = new_tetrimino(i / 21, tets);
+		validate_tet_map(buff, i, tets[i / 21], tets);
 		i += 21;
 	}
-}
-
-/*
- * hadle_file() opens the input file and makes sure it's a valid file.
- */
-
-void	handle_file(char *filename, t_tet **tets)
-{
-	int		fd;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-		invalid_input();
-	get_tetriminos(fd, tets);
-	close(fd);
 }

@@ -50,19 +50,19 @@ typedef struct s_grid
 # define ROW_4 0x000f;
 
 /* Prototypes */
-void	validate_tetrimino(t_tet *tet);
-void	validate_tet_map(char *buff, ssize_t i, t_tet *tet);
+void	validate_tetrimino(t_tet *tet, t_tet **tets);
+void	validate_tet_map(char *buff, ssize_t i, t_tet *tet, t_tet **tets);
 void	free_tetriminos(t_tet **tets);
 void	solve(t_tet **tets);
 void	display_solution(t_grid *grid, t_tet **tets);
 void	try_solution(t_grid *grid, size_t grid_size, t_tet **tets, size_t i);
 int		tetrimino_fits(t_tet *tet, t_grid *grid, size_t k, size_t l);
-int		tet_fits(t_tet *tet, t_grid *grid, size_t k, size_t l);
-void	invalid_input(void);
 void	get_prevs(t_tet **tets);
 void	get_dimensions(t_tet **tets);
-void	handle_file(char *filename, t_tet **tets);
-t_tet	*new_tetrimino(size_t i);
-int		test(void);
+void	free_tetriminos(t_tet **tets);
+void	handle_error(t_tet **tets);
+void	get_prevs(t_tet **tets);
+void	get_dimensions(t_tet **tets);
+void	get_tetriminos(int fd, t_tet **tets);
 
 #endif
